@@ -1,0 +1,64 @@
+local module = {} 
+flag=0
+abc="000000"
+count=00
+function client_start()
+print("ESP8266 Client")
+
+
+tmr.alarm(1, 2000, 1, function()
+     if(wifi.sta.getip()~=nil) then
+          tmr.stop(1)
+        --  print("Connected!")
+      --    print("Client IP Address:",wifi.sta.getip())
+          cl=net.createConnection(net.TCP, 0)
+          cl:connect(88,"192.168.4.1")
+          cl:on("receive", function(sck, no)  uart.write(0,"$"..no.."$") end)
+          tmr.alarm(2, 1000, 1, function() 
+          -- print("alrm triggered")
+         uart.on("data","\r",
+              function(data)
+              --  print("receive from uart:", data)
+                abc=data
+                
+                
+                flag=1
+                if data=="quit\r" then
+                  uart.on("data") -- unregister callback function
+                end
+            end, 0)
+     
+        count=count+1
+        if(flag==1) then
+        cl:send(abc)
+            count=0
+          --  print("msg send")
+         end
+         print(count)
+      if(count==100) then 
+      node.restart()
+      end
+         flag=0
+          end)
+      else
+        -- print("Connecting...")
+      end
+        
+end)
+end 
+function module.start()  
+-- print("starting star")
+ uart.setup(0, 115200, 8, uart.PARITY_NONE, uart.STOPBITS_1, 1)
+   if pcall(client_start) then
+       --     print("Not trasnsfered")
+            else
+         --    print("Trasp")
+
+             end
+            -- client_start()
+          
+end
+
+return module  
+
+

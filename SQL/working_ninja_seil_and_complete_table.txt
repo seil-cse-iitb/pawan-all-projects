@@ -1,0 +1,111 @@
+CREATE DATABASE ninja_seil;
+use ninja_seil;
+CREATE TABLE sensor_info
+(
+Name varchar(255),
+Sensor_type  varchar(255),
+Periodicity varchar(255),
+primary key (Name)
+);
+
+CREATE TABLE sensor_data
+(
+Sensor_ID varchar(20),
+Name varchar(255),
+Classroom  varchar(255),
+Lane int(4),
+Zone int(4),
+Description varchar(255),
+FOREIGN KEY (Name) REFERENCES sensor_info(Name),
+primary key (Sensor_ID)
+);
+
+
+CREATE TABLE camera
+(
+Sensor_ID varchar(20),
+Time_stamp timestamp,
+Sens_value  int,
+Dirty_bit tinyint(1),
+Comment varchar(255),
+FOREIGN KEY (Sensor_ID) REFERENCES sensor_info(Sensor_data),
+primary key (Sensor_ID,Time_stamp)
+);
+
+CREATE TABLE occupancy_status
+(
+Sensor_ID varchar(20),
+Time_stamp timestamp,
+Sens_value  int,
+Dirty_bit tinyint(1),
+Comment varchar(255),
+FOREIGN KEY (Sensor_ID) REFERENCES sensor_info(Sensor_data),
+primary key (Sensor_ID,Time_stamp)
+);
+
+CREATE TABLE temp_data
+(
+Sensor_ID varchar(20),
+Time_stamp timestamp,
+Sens_value  int,
+Dirty_bit tinyint(1),
+Comment varchar(255),
+FOREIGN KEY (Sensor_ID) REFERENCES sensor_info(Sensor_data),
+primary key (Sensor_ID,Time_stamp)
+);
+
+CREATE TABLE pir
+(
+Sensor_ID varchar(20),
+Time_stamp timestamp,
+Sens_value  tinyint(1),
+Dirty_bit tinyint(1),
+Comment varchar(255),
+FOREIGN KEY (Sensor_ID) REFERENCES sensor_info(Sensor_data),
+primary key (Sensor_ID,Time_stamp)
+);
+
+CREATE TABLE light_Status
+(
+Sensor_ID varchar(20),
+Time_stamp timestamp,
+status_  int(8),
+FOREIGN KEY (Sensor_ID) REFERENCES sensor_info(Sensor_data),
+primary key (Sensor_ID,Time_stamp)
+);
+
+CREATE TABLE Fan_status
+(
+Sensor_ID varchar(20),
+Time_stamp timestamp,
+status_  int(8),
+FOREIGN KEY (Sensor_ID) REFERENCES sensor_info(Sensor_data),
+primary key (Sensor_ID,Time_stamp)
+);
+
+CREATE TABLE ac_status
+(
+Sensor_ID varchar(20),
+Time_stamp timestamp,
+status_  int(8),
+FOREIGN KEY (Sensor_ID) REFERENCES sensor_info(Sensor_data),
+primary key (Sensor_ID,Time_stamp)
+);
+
+CREATE TABLE temp_threshold
+(
+Sensor_ID varchar(20),
+Time_stamp timestamp,
+lower_bound  int(4),
+upper_bound int(4),
+set_point int(4),
+status_  int(8),
+FOREIGN KEY (Sensor_ID) REFERENCES sensor_info(Sensor_data),
+primary key (Sensor_ID,Time_stamp)
+);
+
+CREATE TABLE status_mapping
+(
+binary_no int(10),
+decimal_no  int(5)
+);
