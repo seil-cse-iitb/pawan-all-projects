@@ -1,0 +1,45 @@
+Instrustion to programm ESP 8266 -
+Firm ware programming :-
+
+Putting Device Into Flash Mode:-
+
+To enable ESP8266 firmware flashing GPIO0 pin must be pulled low before the device is reset. Conversely, for a normal boot, GPIO0 must be pulled high or floating.
+
+If you have a NodeMCU dev kit then you don't need to do anything, as the USB connection can pull GPIO0 low by asserting DTR and reset your board by asserting RTS.
+
+If you have an ESP-01 or other device without built-in USB, you will need to enable flashing yourself by pulling GPIO0 low or pressing a "flash" switch, while powering up or resetting the module.
+
+Which Files To Flash:-
+
+If you build your firmware with the cloud builder or the Docker image, or any other method that produces a combined binary, then you can flash that file directly to address 0x00000.
+
+Otherwise, if you built your own firmware from source code:
+
+bin/0x00000.bin to 0x00000
+bin/0x10000.bin to 0x10000
+
+Link to cloud builder or dockeer image:- 
+https://github.com/nodemcu/nodemcu-firmware/blob/master/docs/en/build.md
+
+The default init data is provided as part of the SDK in the file esp_init_data_default.bin. NodeMCU will automatically flash this file to the right place on first boot if the sector appears to be empty.
+
+If you need to customize init data then first download the Espressif SDK 2.1.0 and extract esp_init_data_default.bin. Then flash that file just like you'd flash the firmware. The correct address for the init data depends on the capacity of the flash chip.
+
+0x7c000 for 512 kB, modules like most ESP-01, -03, -07 etc.
+0xfc000 for 1 MB, modules like ESP8285, PSF-A85, some ESP-01, -03 etc.
+0x1fc000 for 2 MB
+0x3fc000 for 4 MB, modules like ESP-12E, NodeMCU devkit 1.0, WeMos D1 mini
+0x7fc000 for 8 MB
+0xffc000 for 16 MB, modules like WeMos D1 mini pro
+
+How to send files to esp and how to write application level programms on the device in lua
+
+For lua documentation please refer this link:-
+https://nodemcu.readthedocs.io/en/master/
+
+This link gives all the proper code snipts and example that are very important while programming esp using lua.
+* If you want to include any "X" package in your programm please add the package while creating the firm ware.
+
+
+
+
